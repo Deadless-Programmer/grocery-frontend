@@ -2,23 +2,31 @@ import React, { useState, useRef } from "react";
 // import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const faqs = [
+ const faqs = [
   {
-    question: "Do plumbers deal with heating?",
+    question: "Do you offer organic products?",
     answer:
-      "Some of our local plumbers are also gas registered and experienced working on heating systems, bathrooms and kitchens.",
+      "Yes! We have a wide range of organic fruits, vegetables, and other food items sourced from trusted suppliers.",
   },
   {
-    question: "Do you charge a call out fee?",
-    answer: "No, we do not charge a call out fee.",
+    question: "What are your delivery options?",
+    answer:
+      "We provide same-day and next-day delivery options within the city. Delivery charges may vary based on location.",
   },
   {
-    question: "How quickly can your company send out an engineer?",
-    answer: "We usually send out an engineer within 24 hours.",
+    question: "Can I return a product if I’m not satisfied?",
+    answer:
+      "Absolutely! If you are not satisfied with a product, please contact our support team within 24 hours for a return or replacement.",
   },
   {
-    question: "What should I do if I get a water leak?",
-    answer: "Turn off the main water supply and call us immediately.",
+    question: "How do I track my order?",
+    answer:
+      "After placing an order, you will receive a tracking link via email or SMS to monitor your delivery status in real-time.",
+  },
+  {
+    question: "Do you have discounts or offers?",
+    answer:
+      "Yes! We regularly offer seasonal discounts and bundle deals. Keep an eye on our website or app for the latest promotions.",
   },
 ];
 

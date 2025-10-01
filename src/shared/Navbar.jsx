@@ -20,14 +20,15 @@ const Navbar = () => {
             <Link to="/" className="hover:text-gray-200">
               Home
             </Link>
-            <Link to="/create-user" className="hover:text-gray-200">
-              Sign Up
-            </Link>
+          
             <Link to="/products" className="hover:text-gray-200">
               Products
             </Link>
             <Link to="/Product-Create" className="hover:text-gray-200">
              Product-Create
+            </Link>
+              <Link to="/create-user" className="hover:text-gray-200">
+              Sign Up
             </Link>
             <Link to="/users" className="hover:text-gray-200">
               Users
@@ -49,14 +50,15 @@ const Navbar = () => {
           <Link to="/" className="block hover:text-gray-200" onClick={() => setIsOpen(false)}>
             Home
           </Link>
-          <Link to="/create-user" className="block hover:text-gray-200" onClick={() => setIsOpen(false)}>
-            Sign Up
-          </Link>
+        
           <Link to="/products" className="block hover:text-gray-200" onClick={() => setIsOpen(false)}>
             Products
           </Link>
           <Link to="/Product-Create" className="block hover:text-gray-200" onClick={() => setIsOpen(false)}>
           Product-Create
+          </Link>
+            <Link to="/create-user" className="block hover:text-gray-200" onClick={() => setIsOpen(false)}>
+            Sign Up
           </Link>
           <Link to="/users" className="block hover:text-gray-200" onClick={() => setIsOpen(false)}>
            Users
