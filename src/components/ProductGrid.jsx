@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { getProducts } from "../api/api";
+import { getProducts } from "../api/productApi";
+
 
 
 const ProductGrid = () => {

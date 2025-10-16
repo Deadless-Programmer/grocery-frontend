@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { deleteUser, getUsers, updateUser } from "../../api/api";
+import { deleteUser, getUsers, updateUser, updateUserRole } from "../../api/userApi";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
-  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", role: "" });
 
   useEffect(() => {
     getUsers().then((data) => setUsers(data));
@@ -19,7 +19,7 @@ const UserList = () => {
   // Open edit form
   const handleEdit = (user) => {
     setEditingUser(user._id);
-    setFormData({ name: user.name, email: user.email });
+    setFormData({ name: user.name, email: user.email, role: user.role });
   };
 
   // Handle input change
@@ -33,11 +33,32 @@ const UserList = () => {
     await updateUser(editingUser, formData);
     setUsers(
       users.map((u) =>
-        u._id === editingUser ? { ...u, name: formData.name, email: formData.email } : u
+        u._id === editingUser
+          ? { ...u, name: formData.name, email: formData.email }
+          : u
       )
     );
     setEditingUser(null); // close edit mode
   };
+
+
+
+
+  const handleRoleChange = async (userId, newRole) => {
+  try {
+    const res = await updateUserRole(userId, newRole);
+    if (res?.success) {
+      alert(`User role updated to ${newRole} successfully!`);
+      // ইচ্ছা করলে এখানে state আপডেট করে UI তে সাথে সাথে দেখাতে পারো
+     setUsers(prev => prev.map(u => u._id === userId ? {...u, role: newRole} : u));
+    } else {
+      alert("Failed to update role.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Something went wrong!");
+  }
+};
 
   return (
     <div className="p-6">
@@ -49,6 +70,7 @@ const UserList = () => {
             <tr className="bg-blue-600 text-white">
               <th className="px-4 py-2 border">#</th>
               <th className="px-4 py-2 border">Name</th>
+              <th className="px-4 py-2 border">Role</th>
               <th className="px-4 py-2 border">Email</th>
               <th className="px-4 py-2 border">Actions</th>
             </tr>
@@ -71,6 +93,34 @@ const UserList = () => {
                       u.name
                     )}
                   </td>
+                  <td className="px-4 py-2 border">
+                    {editingUser === u._id ? (
+                      <select
+                        value={u.role}
+                        onChange={(e) =>
+                          handleRoleChange(u._id, e.target.value)
+                        }
+                        className="border p-1 rounded"
+                      >
+                        <option value="user">User</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    ) : (
+                      <span
+                        className={`font-semibold ${
+                          u.role === "admin"
+                            ? "text-red-600"
+                            : u.role === "moderator"
+                            ? "text-green-600"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        {u.role}
+                      </span>
+                    )}
+                  </td>
+
                   <td className="px-4 py-2 border">
                     {editingUser === u._id ? (
                       <input

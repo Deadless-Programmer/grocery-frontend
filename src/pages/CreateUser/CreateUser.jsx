@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../../api/api";
+import { createUser } from "../../api/userApi";
+import axios from "../../api/api";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
@@ -17,8 +18,21 @@ const CreateUser = () => {
     setError("");
 
     try {
-      await createUser(formData); 
-      navigate("/users"); 
+      // 1️⃣ Create user
+      await createUser(formData);
+
+      // 2️⃣ Automatic login using the same credentials
+      const { data } = await axios.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // 3️⃣ Save tokens in localStorage
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+
+      // 4️⃣ Redirect user → যদি previous page থাকে, নাহলে home
+      navigate("/"); 
     } catch (err) {
         console.log(err)
       setError("Signup failed. Try again!");
