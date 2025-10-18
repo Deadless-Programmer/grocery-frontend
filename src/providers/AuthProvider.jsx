@@ -5,9 +5,9 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // <-- loading state যোগ করা হলো
+  const [loading, setLoading] = useState(true);
 
-  // 🔹 Token থেকে user info fetch করবে
+  // Backend থেকে user info আনবে
   const fetchUser = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -17,15 +17,13 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await api.get("/auth/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get("/auth/me");
+      console.log("🟢 API Response:", res.data);
       setUser(res.data.user);
     } catch (err) {
       console.log("User fetch error:", err);
       setUser(null);
     } finally {
-      // ✅ সবশেষে loading false করো, error হোক বা success
       setLoading(false);
     }
   };
@@ -34,10 +32,18 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // ✅ loading state Context এ পাঠাও
+  
+
   return (
-    <AuthContext.Provider value={{ user, setUser, fetchUser, loading }}>
-      {children}
+    <AuthContext.Provider value={{ user, setUser, fetchUser, loading}}>
+      {/* 🔹 loading true থাকলে পুরো app render না করাই ভালো */}
+      {loading ? (
+        <div className="flex items-center justify-center h-screen text-lg">
+          Checking access...
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };

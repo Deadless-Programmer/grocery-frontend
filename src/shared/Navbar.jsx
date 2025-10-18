@@ -2,18 +2,28 @@ import React, { useContext, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
+import api from "../api/api";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { user, setUser } = useContext(AuthContext);
-  // console.log(user)
+  console.log("👤 Current User:", user);
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setUser(null);
-  };
+
+
+
+ const handleLogout = async () => {
+  localStorage.removeItem("accessToken");
+
+  try {
+    await api.post("/auth/logout", {}, { withCredentials: true }); // clears cookie
+  } catch (err) {
+    console.log("Logout error:", err);
+  }
+
+  setUser(null);
+};
 
   return (
     <nav className="bg-green-600 text-white shadow-md">

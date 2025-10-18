@@ -12,24 +12,18 @@ const Login = () => {
 
   const { setUser } = useContext(AuthContext);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await api.post("/auth/login", {
-        email,
-        password,
-      });
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await api.post("/auth/login", { email, password }, { withCredentials: true });
 
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
-
-      setUser(res.data.user);
-      setMessage("Login successful!");
-      navigate("/");
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Login failed");
-    }
-  };
+    localStorage.setItem("accessToken", res.data.accessToken);
+    setUser(res.data.user);
+    navigate("/");
+  } catch (err) {
+    setMessage(err.response?.data?.message || "Login failed");
+  }
+};
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
